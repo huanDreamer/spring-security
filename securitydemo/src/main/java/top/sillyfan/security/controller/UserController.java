@@ -12,7 +12,7 @@ public class UserController {
 
 
     @GetMapping("/user")
-    public List<User> query() {
+    public List<User> query(String name) {
         return Collections.emptyList();
     }
 
