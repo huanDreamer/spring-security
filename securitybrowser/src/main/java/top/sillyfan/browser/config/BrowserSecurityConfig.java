@@ -48,6 +48,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/demo-login.html").permitAll()
+                .antMatchers("/code/image").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and().csrf().disable() // 把跨站攻击的防护去掉
