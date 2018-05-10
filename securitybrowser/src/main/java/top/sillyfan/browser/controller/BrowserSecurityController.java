@@ -10,12 +10,10 @@ import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import top.sillyfan.api.response.ApiResponse;
 import top.sillyfan.api.response.code.ApiErrorCodeDef;
-import top.sillyfan.security.config.properties.BrowserProperties;
 import top.sillyfan.security.config.properties.SecurityProperties;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,13 +24,10 @@ import java.io.IOException;
 public class BrowserSecurityController {
 
     private static final Logger logger = LoggerFactory.getLogger(BrowserSecurityController.class);
-
-    //请求的缓存
-    private RequestCache requestCache = new HttpSessionRequestCache();
-
     @Autowired
     SecurityProperties securityProperties;
-
+    //请求的缓存
+    private RequestCache requestCache = new HttpSessionRequestCache();
 
     /**
      * 处理身份认证请求
