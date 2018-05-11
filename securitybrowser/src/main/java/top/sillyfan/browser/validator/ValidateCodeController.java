@@ -1,5 +1,6 @@
-package top.sillyfan.security.validator;
+package top.sillyfan.browser.validator;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
 import org.springframework.social.connect.web.SessionStrategy;
@@ -7,7 +8,8 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
-import top.sillyfan.security.validator.code.ImageCode;
+import top.sillyfan.browser.validator.code.ImageCode;
+import top.sillyfan.security.config.properties.SecurityProperties;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -18,9 +20,10 @@ import java.io.IOException;
 import java.util.Random;
 
 @RestController
-public class ValidatorCodeController {
+public class ValidateCodeController {
 
-    private static final String SessionKey = "session_image_code";
+    @Autowired
+    private SecurityProperties securityProperties;
 
     private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
 
@@ -41,7 +44,7 @@ public class ValidatorCodeController {
 
         ImageCode imageCode = createImage(request);
 
-        sessionStrategy.setAttribute(new ServletWebRequest(request), SessionKey, imageCode);
+        sessionStrategy.setAttribute(new ServletWebRequest(request), securityProperties.getBrowser().getSessionKey(), imageCode);
 
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
 
@@ -82,7 +85,7 @@ public class ValidatorCodeController {
 
         g.dispose();
 
-        return new ImageCode(image, sRand, 3000L);
+        return new ImageCode(image, sRand, 60L);
     }
 
     /**

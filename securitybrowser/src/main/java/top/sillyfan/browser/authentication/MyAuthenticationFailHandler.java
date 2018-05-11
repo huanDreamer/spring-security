@@ -6,8 +6,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
-import top.sillyfan.api.response.ApiResponse;
-import top.sillyfan.api.response.code.ApiErrorCodeDef;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +21,7 @@ public class MyAuthenticationFailHandler implements AuthenticationFailureHandler
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-        response.getWriter().write(objectMapper.writeValueAsString(ApiResponse.error(ApiErrorCodeDef.CODE_1000)));
+//        response.getWriter().write(objectMapper.writeValueAsString(ApiResponse.error(ApiErrorCodeDef.CODE_1000)));
+        response.getWriter().write(exception.getMessage());
     }
 }

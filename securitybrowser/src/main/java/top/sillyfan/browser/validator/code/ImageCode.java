@@ -1,4 +1,4 @@
-package top.sillyfan.security.validator.code;
+package top.sillyfan.browser.validator.code;
 
 import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
@@ -27,6 +27,10 @@ public class ImageCode {
         this.image = image;
         this.code = code;
         this.expireTime = expireTime;
+    }
+
+    public boolean isExpired() {
+        return expireTime.isBefore(LocalDateTime.now());
     }
 
     public BufferedImage getImage() {
