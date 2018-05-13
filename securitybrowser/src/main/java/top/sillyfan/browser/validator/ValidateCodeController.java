@@ -55,7 +55,7 @@ public class ValidateCodeController {
 
         ImageCode imageCode = imageValidatorCodeGenerator.generatorCode(request, response);
 
-        sessionStrategy.setAttribute(new ServletWebRequest(request), securityProperties.getBrowser().getSessionKey(), imageCode);
+        sessionStrategy.setAttribute(new ServletWebRequest(request), securityProperties.getBrowser().getSessionKey() + "_IMAGE", imageCode);
 
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
 
@@ -75,7 +75,7 @@ public class ValidateCodeController {
 
         SmsCode smsCode = smsValidatorCodeGenerator.generatorCode(request, response);
 
-        sessionStrategy.setAttribute(new ServletWebRequest(request), securityProperties.getBrowser().getSessionKey(), smsCode);
+        sessionStrategy.setAttribute(new ServletWebRequest(request), securityProperties.getBrowser().getSessionKey() + "_SMS", smsCode);
 
         // 获取电话号码
         String phoneNUm = ServletRequestUtils.getStringParameter(request, "phoneNum");

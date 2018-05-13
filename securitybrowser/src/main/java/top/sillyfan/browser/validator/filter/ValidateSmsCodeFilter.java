@@ -9,7 +9,7 @@ import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.filter.OncePerRequestFilter;
-import top.sillyfan.browser.validator.code.ImageCode;
+import top.sillyfan.browser.validator.code.SmsCode;
 import top.sillyfan.browser.validator.exception.ValidateCodeException;
 import top.sillyfan.security.config.properties.SecurityProperties;
 
@@ -23,7 +23,7 @@ import java.io.IOException;
  * 过滤器 用于验证输入的验证码是否正确
  */
 @Component
-public class ValidateCodeFilter extends OncePerRequestFilter {
+public class ValidateSmsCodeFilter extends OncePerRequestFilter {
 
     @Autowired
     AuthenticationFailureHandler authenticationFailureHandler;
@@ -32,13 +32,13 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
     @Autowired
     private SecurityProperties securityProperties;
 
-    private final String sessionKey = securityProperties.getBrowser().getSessionKey() + "_IMAGE";
+    private final String sessionKey = securityProperties.getBrowser().getSessionKey() + "_SMS";
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
                                     HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         // 登录操作才执行验证逻辑
-        if (StringUtils.equals("/authentication/form", httpServletRequest.getRequestURI())
+        if (StringUtils.equals("/authentication/phone", httpServletRequest.getRequestURI())
                 && StringUtils.equalsIgnoreCase(httpServletRequest.getMethod(), "post")) {
 
             try {
@@ -59,7 +59,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
      */
     private void validate(ServletWebRequest servletWebRequest) {
 
-        ImageCode imageCode = (ImageCode) sessionStrategy.getAttribute(servletWebRequest, sessionKey);
+        SmsCode smsCode = (SmsCode) sessionStrategy.getAttribute(servletWebRequest, sessionKey);
 
         String code = "";
 
@@ -73,20 +73,19 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
             throw new ValidateCodeException("请输入验证码");
         }
 
-        if (imageCode == null) {
+        if (smsCode == null) {
             throw new ValidateCodeException("验证码不存在");
         }
 
-        if (imageCode.isExpired()) {
+        if (smsCode.isExpired()) {
             sessionStrategy.removeAttribute(servletWebRequest, sessionKey);
             throw new ValidateCodeException("验证码已过期");
         }
 
-        if (!StringUtils.equalsIgnoreCase(imageCode.getCode(), code)) {
+        if (!StringUtils.equalsIgnoreCase(smsCode.getCode(), code)) {
             throw new ValidateCodeException("验证码输入错误");
         }
 
         sessionStrategy.removeAttribute(servletWebRequest, sessionKey);
-
     }
 }
