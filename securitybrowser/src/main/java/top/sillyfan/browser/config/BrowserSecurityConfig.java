@@ -44,14 +44,14 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)    // 添加自定义的验证码处理器
                 .formLogin()    // 表示从登录页面进行授权，如果是formBasic就是alert的形式
                 .loginPage("/login")   // 配置登录页面
-                .loginProcessingUrl("/form")     // 表示登录表单提交的url {@see UsernamePasswordAuthenticationFilter}
+                .loginProcessingUrl("/authentication/form")     // 表示登录表单提交的url {@see UsernamePasswordAuthenticationFilter}
                 .successHandler(authenticationSuccessHandler)   // 配置自定义的鉴权成功处理器
                 .failureHandler(authenticationFailHandler)      // 鉴权失败的处理器
                 .and()
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/demo-login.html").permitAll()
-                .antMatchers("/code/image").permitAll()
+                .antMatchers("/code/*").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and().csrf().disable() // 把跨站攻击的防护去掉

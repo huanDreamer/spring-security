@@ -36,7 +36,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
                                     HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         // 登录操作才执行验证逻辑
-        if (StringUtils.equals("/form", httpServletRequest.getRequestURI())
+        if (StringUtils.equals("/authentication/form", httpServletRequest.getRequestURI())
                 && StringUtils.equalsIgnoreCase(httpServletRequest.getMethod(), "post")) {
 
             try {

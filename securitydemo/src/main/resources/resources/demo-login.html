@@ -6,9 +6,9 @@
 </head>
 <body>
 
-<h2>demo 登录</h2>
+<h2>用户名密码登录</h2>
 
-<form action="/form" method="post">
+<form action="/authentication/form" method="post">
 
     <p>
         <label for="username">用户名</label>
@@ -23,6 +23,24 @@
     <p>
         <image src="/code/image"></image>
         <input type="text" name="code">
+    </p>
+
+    <button type="submit">登录</button>
+</form>
+
+<h2>短信验证码登录</h2>
+
+<form action="/authentication/phone" method="post">
+
+    <p>
+        <label for="phoneNum">电话号码</label>
+        <input id="phoneNum" type="text" name="phoneNum" value="10086">
+    </p>
+
+    <p>
+        <label for="smsCode">短信验证码</label>
+        <input id="smsCode" type="text" name="smsCode">
+        <a href="/code/sms?phoneNum=10086">发送验证码</a>
     </p>
 
     <button type="submit">登录</button>
