@@ -2,12 +2,15 @@ package top.sillyfan.security.config.properties;
 
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
 @ConfigurationProperties(prefix = "sillyfan.security")
 public class SecurityProperties {
 
-    BrowserProperties browser = new BrowserProperties();
+    private BrowserProperties browser;
+
+    public SecurityProperties() {
+        browser = new BrowserProperties();
+    }
 
     public BrowserProperties getBrowser() {
         return browser;

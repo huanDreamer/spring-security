@@ -10,6 +10,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import top.sillyfan.browser.authentication.MyAuthenticationFailHandler;
 import top.sillyfan.browser.authentication.MyAuthenticationSuccessHandler;
 import top.sillyfan.browser.validator.filter.ValidateCodeFilter;
+import top.sillyfan.browser.validator.filter.ValidateSmsCodeFilter;
+import top.sillyfan.security.authentication.mobile.SmsAuthenticationSecurityConfig;
 import top.sillyfan.security.config.SecurityCoreConfig;
 
 /**
@@ -29,6 +31,12 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     ValidateCodeFilter validateCodeFilter;
 
+    @Autowired
+    ValidateSmsCodeFilter validateSmsCodeFilter;
+
+    @Autowired
+    SmsAuthenticationSecurityConfig smsAuthenticationSecurityConfig;
+
     /**
      * 配置密码加密算法
      *
@@ -41,6 +49,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .addFilterBefore(validateSmsCodeFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)    // 添加自定义的验证码处理器
                 .formLogin()    // 表示从登录页面进行授权，如果是formBasic就是alert的形式
                 .loginPage("/login")   // 配置登录页面
@@ -55,6 +64,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
                 .and().csrf().disable() // 把跨站攻击的防护去掉
+                .apply(smsAuthenticationSecurityConfig) // 添加配置
         ;
     }
 }

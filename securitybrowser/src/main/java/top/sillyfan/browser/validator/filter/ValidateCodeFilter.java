@@ -32,8 +32,6 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
     @Autowired
     private SecurityProperties securityProperties;
 
-    private final String sessionKey = securityProperties.getBrowser().getSessionKey() + "_IMAGE";
-
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
                                     HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
@@ -58,6 +56,8 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
      * @param servletWebRequest
      */
     private void validate(ServletWebRequest servletWebRequest) {
+        
+        String sessionKey = securityProperties.getBrowser().getSessionKey() + "_IMAGE";
 
         ImageCode imageCode = (ImageCode) sessionStrategy.getAttribute(servletWebRequest, sessionKey);
 

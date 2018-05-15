@@ -32,8 +32,6 @@ public class ValidateSmsCodeFilter extends OncePerRequestFilter {
     @Autowired
     private SecurityProperties securityProperties;
 
-    private final String sessionKey = securityProperties.getBrowser().getSessionKey() + "_SMS";
-
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
                                     HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
@@ -58,6 +56,8 @@ public class ValidateSmsCodeFilter extends OncePerRequestFilter {
      * @param servletWebRequest
      */
     private void validate(ServletWebRequest servletWebRequest) {
+
+        String sessionKey = securityProperties.getBrowser().getSessionKey() + "_SMS";
 
         SmsCode smsCode = (SmsCode) sessionStrategy.getAttribute(servletWebRequest, sessionKey);
 
